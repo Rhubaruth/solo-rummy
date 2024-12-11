@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dm6d4247pu0m1"]
 
 [ext_resource type="Script" path="res://card.gd" id="1_3r7l7"]
-[ext_resource type="Texture2D" uid="uid://b6nnv6l3gxbke" path="res://assets/boardgamePack_v2/Vector/playingCards.svg" id="3_623ql"]
+[ext_resource type="Texture2D" uid="uid://c7poq44a7a1gq" path="res://assets/boardgamePack_v2/Vector/playingCards.svg" id="3_623ql"]
 
 [sub_resource type="Animation" id="Animation_rjoco"]
 length = 0.05

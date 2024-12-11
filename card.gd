@@ -26,7 +26,7 @@ signal card_hover_end(Card)
 
 signal card_swap(Card, int)
 
-var SHORT_CLICK_THREASHOLD: float = 0.075
+var SHORT_CLICK_THREASHOLD: float = 0.095
 var click_timer: float = 0.0
 @export var HOVER_OFFSET: Vector2 = Vector2(-64, -90)
 
