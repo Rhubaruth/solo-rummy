@@ -1,0 +1,102 @@
+[gd_scene load_steps=9 format=3 uid="uid://biy2th7ch5a2r"]
+
+[ext_resource type="Script" path="res://card_container.gd" id="1_j1ohw"]
+[ext_resource type="Script" path="res://game.gd" id="1_lfp6u"]
+[ext_resource type="Script" path="res://discard_button.gd" id="2_j5pqj"]
+[ext_resource type="Script" path="res://deck.gd" id="2_sie3a"]
+[ext_resource type="Texture2D" uid="uid://c0gwkh7ty4pye" path="res://assets/boardgamePack_v2/Vector/playingCards_back.svg" id="2_uslp4"]
+[ext_resource type="Texture2D" uid="uid://b6nnv6l3gxbke" path="res://assets/boardgamePack_v2/Vector/playingCards.svg" id="3_iqj4u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vufhf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p41oh"]
+
+[node name="Board" type="Node" groups=["Board"]]
+script = ExtResource("1_lfp6u")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0.152727, 0.293169, 0.338079, 1)
+
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+
+[node name="DiscardButton" type="Button" parent="UI/Control"]
+self_modulate = Color(1, 0.101705, 0.72068, 1)
+custom_minimum_size = Vector2(144, 194)
+layout_mode = 1
+offset_left = 272.0
+offset_top = 48.0
+offset_right = 416.0
+offset_bottom = 242.0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_vufhf")
+action_mode = 0
+text = "Zahodit"
+flat = true
+script = ExtResource("2_j5pqj")
+
+[node name="Sprite2D" type="Sprite2D" parent="UI/Control/DiscardButton"]
+visible = false
+show_behind_parent = true
+position = Vector2(2, 2)
+texture = ExtResource("3_iqj4u")
+centered = false
+hframes = 14
+vframes = 4
+frame = 55
+
+[node name="Button" type="Button" parent="UI/Control" groups=["Deck"]]
+custom_minimum_size = Vector2(144, 194)
+layout_mode = 0
+offset_left = 80.0
+offset_top = 48.0
+offset_right = 224.0
+offset_bottom = 242.0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_p41oh")
+disabled = true
+flat = true
+script = ExtResource("2_sie3a")
+handContainerPath = NodePath("../Hand")
+
+[node name="Sprite2D" type="Sprite2D" parent="UI/Control/Button"]
+texture = ExtResource("2_uslp4")
+centered = false
+offset = Vector2(2, 2)
+region_enabled = true
+region_rect = Rect2(601, 0, 139, 190)
+
+[node name="Hand" type="Control" parent="UI/Control" groups=["Hand"]]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -496.0
+offset_top = -20.0
+offset_right = -456.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_j1ohw")
+metadata/_edit_group_ = true
+
+[connection signal="state_change" from="." to="UI/Control/DiscardButton" method="_on_board_state_change"]
+[connection signal="state_change" from="." to="UI/Control/Button" method="_on_board_state_change"]
+[connection signal="drawing" from="UI/Control/Button" to="." method="_on_deck_drawing"]
+[connection signal="child_entered_tree" from="UI/Control/Hand" to="UI/Control/Hand" method="_on_child_entered_tree"]
+[connection signal="child_exiting_tree" from="UI/Control/Hand" to="UI/Control/Hand" method="_on_child_exiting_tree"]
