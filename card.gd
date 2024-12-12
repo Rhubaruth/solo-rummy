@@ -26,7 +26,7 @@ signal card_hover_end(Card)
 
 signal card_swap(Card, int)
 
-var SHORT_CLICK_THREASHOLD: float = 0.095
+var SHORT_CLICK_THREASHOLD: float = 0.09
 var click_timer: float = 0.0
 @export var HOVER_OFFSET: Vector2 = Vector2(-64, -90)
 
@@ -51,12 +51,12 @@ func setup(suit: SuitEnum, value: int):
 func _on_gui_input(event):
 	if not ClickCD.is_stopped():
 		return
-	if Input.is_action_just_pressed("click") and state != CardStateEnum.HOVER:
+	if Input.is_action_just_pressed("click") \
+	and state != CardStateEnum.HOVER:
 		click_timer = 0.0
 	
 	if Input.is_action_pressed("click"):
 		if state != CardStateEnum.HOVER:
-			print(click_timer)
 			click_timer += get_process_delta_time()
 			if click_timer > SHORT_CLICK_THREASHOLD:
 				start_hover()
@@ -72,13 +72,14 @@ func _on_gui_input(event):
 		else:
 			emit_signal("card_deselect")
 	
-	if event is InputEventMouseMotion and state == CardStateEnum.HOVER:
+	if event is InputEventMouseMotion \
+	and state == CardStateEnum.HOVER:
 		#position.y = position.y - 80
 		global_position.x = get_global_mouse_position().x + HOVER_OFFSET.x
 		
-		if position.x < orig_position_x - Sprite.get_rect().size.x:
+		if position.x < orig_position_x - 0.7 * Sprite.get_rect().size.x:
 			emit_signal("card_swap", self, -1)
-		elif position.x > orig_position_x + Sprite.get_rect().size.x:
+		elif position.x > orig_position_x + 0.7 * Sprite.get_rect().size.x:
 			emit_signal("card_swap", self, 1)
 			pass
 		

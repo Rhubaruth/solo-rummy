@@ -10,6 +10,7 @@ signal state_change(state)
 
 
 func _ready():
+	Input.emulate_mouse_from_touch = true
 	emit_signal("state_change", state)
 
 func card_select(card: Card):

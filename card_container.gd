@@ -7,6 +7,8 @@ const CARD_WIDTH: int = 128
 
 func swap(card: Card, dir: int):
 	var node_idx = card.get_index()
+	if node_idx + dir < 0 or node_idx + dir >= get_child_count():
+		return
 	var other_card: Card = get_child(node_idx + dir)
 	move_child(card, node_idx + dir)
 	
@@ -19,7 +21,6 @@ func swap(card: Card, dir: int):
 	pass
 
 func _on_child_entered_tree(node):
-	print('Enter')
 	var node_idx = node.get_index()
 	var new_pos := Vector2.ZERO
 	new_pos.x = node_idx * (CARD_WIDTH + SPACING)
@@ -31,7 +32,6 @@ func _on_child_entered_tree(node):
 
 
 func _on_child_exiting_tree(node):
-	print('Exit')
 	var node_idx = node.get_index()
 	
 	for i in range(node_idx+1, get_child_count()):
@@ -46,7 +46,6 @@ func _on_child_exiting_tree(node):
 func _on_child_order_changed():
 	if get_child_count() < 1:
 		return
-	print('Order')
 	for i in range(0, get_child_count()):
 		var card = get_child(i)
 		var new_pos = card.position
