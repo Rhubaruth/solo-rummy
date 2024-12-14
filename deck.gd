@@ -1,4 +1,4 @@
-extends Button
+extends Control
 class_name DeckClass
 
 const StatesEnum = preload("res://StatesEnum.gd").State
@@ -18,10 +18,11 @@ func _ready():
 	if handContainer == null:
 		push_error("handContainer not selected")
 	
+	var card: Card
 	# Create deck
 	for suit in SuitEnum:
-		for value in range(1, 13):
-			var card: Card = card_tscn.instantiate()
+		for value in range(1, 14):
+			card = card_tscn.instantiate()
 			card.setup(SuitEnum[suit], value)
 			deck.append(card)
 	
@@ -30,7 +31,7 @@ func _ready():
 		draw_card()
 	
 	var joker_position = randi_range(10, len(deck)-2)
-	var card: Card = card_tscn.instantiate()
+	card = card_tscn.instantiate()
 	card.setup(SuitEnum.Spades, 14)
 	deck.insert(joker_position, card)
 	
@@ -45,5 +46,5 @@ func draw_card() -> bool:
 
 func _on_board_state_change(state):
 	if state == StatesEnum.DRAWING:
-		emit_signal("drawing", self)
+		drawing.emit(self)
 	pass # Replace with function body.

@@ -26,7 +26,7 @@ signal card_hover_end(Card)
 
 signal card_swap(Card, int)
 
-var SHORT_CLICK_THREASHOLD: float = 0.09
+var SHORT_CLICK_THREASHOLD: float = 0.1
 var click_timer: float = 0.0
 @export var HOVER_OFFSET: Vector2 = Vector2(-64, -90)
 
@@ -44,12 +44,13 @@ func _ready():
 	
 	Sprite.frame_coords = Vector2i(self.value-1, self.suit-1)
 
-func setup(suit: SuitEnum, value: int):
-	self.value = value
-	self.suit = suit
+
+func setup(new_suit: SuitEnum, new_value: int):
+	self.value = new_value
+	self.suit = new_suit
 
 func _on_gui_input(event):
-	if not ClickCD.is_stopped():
+	if not ClickCD.is_stopped() or self.position.y < 0:
 		return
 	if Input.is_action_just_pressed("click") \
 	and state != CardStateEnum.HOVER:
@@ -63,7 +64,7 @@ func _on_gui_input(event):
 			return
 	
 	if Input.is_action_just_released("click"):
-		if click_timer > SHORT_CLICK_THREASHOLD:
+		if click_timer > SHORT_CLICK_THREASHOLD or self.value == 14:
 			end_hover()
 			return
 		ClickCD.start()
@@ -123,12 +124,3 @@ func move_to(new_position: Vector2, speed_mult: float = 1):
 	var tween: Tween = create_tween()
 	var duration = 0.3 / speed_mult
 	tween.tween_property(self, "position", new_position, duration)
-
-func move_from(new_offset: Vector2, speed_mult: float = 1):
-	var tween: Tween = create_tween()
-	var duration = 0.3 / speed_mult
-	var old_offset = Vector2.ZERO
-	if Sprite != null:
-		old_offset = Sprite.offset
-		Sprite.offset = new_offset + old_offset
-	tween.tween_property(Sprite, "offset", old_offset, duration)

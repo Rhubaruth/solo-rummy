@@ -1,15 +1,17 @@
-[gd_scene load_steps=9 format=3 uid="uid://biy2th7ch5a2r"]
+[gd_scene load_steps=11 format=3 uid="uid://biy2th7ch5a2r"]
 
 [ext_resource type="Script" path="res://card_container.gd" id="1_j1ohw"]
 [ext_resource type="Script" path="res://game.gd" id="1_lfp6u"]
 [ext_resource type="Script" path="res://discard_button.gd" id="2_j5pqj"]
+[ext_resource type="Script" path="res://meld_button.gd" id="2_seyna"]
 [ext_resource type="Script" path="res://deck.gd" id="2_sie3a"]
 [ext_resource type="Texture2D" uid="uid://cfvu43og8w65m" path="res://assets/boardgamePack_v2/Vector/playingCards_back.svg" id="2_uslp4"]
 [ext_resource type="Texture2D" uid="uid://c7poq44a7a1gq" path="res://assets/boardgamePack_v2/Vector/playingCards.svg" id="3_iqj4u"]
+[ext_resource type="Script" path="res://meld_container.gd" id="8_db5cs"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_quunf"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vufhf"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p41oh"]
 
 [node name="Board" type="Control" groups=["Board"]]
 layout_mode = 3
@@ -30,19 +32,26 @@ grow_vertical = 2
 mouse_filter = 1
 color = Color(0.152727, 0.293169, 0.338079, 1)
 
-[node name="UI" type="CanvasLayer" parent="."]
-
-[node name="Control" type="Control" parent="UI"]
-layout_mode = 3
-anchors_preset = 15
+[node name="MeldButton" type="Button" parent="."]
+self_modulate = Color(1, 0.101705, 0.72068, 1)
+custom_minimum_size = Vector2(144, 194)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 6
+offset_left = -224.0
+offset_top = 48.0
+offset_right = -80.0
+offset_bottom = 242.0
+grow_horizontal = 0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_quunf")
+toggle_mode = true
+action_mode = 0
+text = "Vyložit"
+flat = true
+script = ExtResource("2_seyna")
 
-[node name="DiscardButton" type="Button" parent="UI/Control"]
+[node name="DiscardButton" type="Button" parent="."]
 self_modulate = Color(1, 0.101705, 0.72068, 1)
 custom_minimum_size = Vector2(144, 194)
 layout_mode = 1
@@ -57,7 +66,7 @@ text = "Zahodit"
 flat = true
 script = ExtResource("2_j5pqj")
 
-[node name="Sprite2D" type="Sprite2D" parent="UI/Control/DiscardButton"]
+[node name="Sprite2D" type="Sprite2D" parent="DiscardButton"]
 visible = false
 show_behind_parent = true
 position = Vector2(2, 2)
@@ -67,27 +76,24 @@ hframes = 14
 vframes = 4
 frame = 55
 
-[node name="Button" type="Button" parent="UI/Control" groups=["Deck"]]
+[node name="Deck" type="Control" parent="." groups=["Deck"]]
 custom_minimum_size = Vector2(144, 194)
-layout_mode = 0
+anchors_preset = 0
 offset_left = 80.0
 offset_top = 48.0
 offset_right = 224.0
 offset_bottom = 242.0
-theme_override_styles/focus = SubResource("StyleBoxEmpty_p41oh")
-disabled = true
-flat = true
 script = ExtResource("2_sie3a")
 handContainerPath = NodePath("../Hand")
 
-[node name="Sprite2D" type="Sprite2D" parent="UI/Control/Button"]
+[node name="Sprite2D" type="Sprite2D" parent="Deck"]
 texture = ExtResource("2_uslp4")
 centered = false
 offset = Vector2(2, 2)
 region_enabled = true
 region_rect = Rect2(601, 0, 139, 190)
 
-[node name="Hand" type="Control" parent="UI/Control" groups=["Hand"]]
+[node name="Hand" type="Control" parent="." groups=["Hand"]]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -103,8 +109,22 @@ grow_vertical = 2
 script = ExtResource("1_j1ohw")
 metadata/_edit_group_ = true
 
-[connection signal="state_change" from="." to="UI/Control/DiscardButton" method="_on_board_state_change"]
-[connection signal="state_change" from="." to="UI/Control/Button" method="_on_board_state_change"]
-[connection signal="drawing" from="UI/Control/Button" to="." method="_on_deck_drawing"]
-[connection signal="child_entered_tree" from="UI/Control/Hand" to="UI/Control/Hand" method="_on_child_entered_tree"]
-[connection signal="child_exiting_tree" from="UI/Control/Hand" to="UI/Control/Hand" method="_on_child_exiting_tree"]
+[node name="Melds" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 312.0
+offset_right = 60.0
+offset_bottom = 502.0
+grow_horizontal = 0
+script = ExtResource("8_db5cs")
+
+[connection signal="state_change" from="." to="MeldButton" method="_on_board_state_change"]
+[connection signal="state_change" from="." to="DiscardButton" method="_on_board_state_change"]
+[connection signal="state_change" from="." to="Deck" method="_on_board_state_change"]
+[connection signal="toggled" from="MeldButton" to="." method="_on_meld_button_toggled"]
+[connection signal="drawing" from="Deck" to="." method="_on_deck_drawing"]
+[connection signal="child_entered_tree" from="Hand" to="Hand" method="_on_child_entered_tree"]
+[connection signal="child_exiting_tree" from="Hand" to="Hand" method="_on_child_exiting_tree"]

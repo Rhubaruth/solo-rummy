@@ -6,7 +6,7 @@ const SuitEnum = preload("res://SuitEnum.gd").Suit
 
 @onready var Sprite = $Sprite2D
 
-signal discarding
+#signal discarding
 
 func _ready():
 	var board = get_tree().get_first_node_in_group("Board")
@@ -14,9 +14,6 @@ func _ready():
 		return
 	
 	self.pressed.connect(board._on_discard_pressed.bind(self))
-
-func set_sprite(value: int, suit: SuitEnum):
-	Sprite.frame_coords = Vector2i(value-1, suit-1)
 
 func _on_board_state_change(state):
 	if state == StatesEnum.DISCARDING:
