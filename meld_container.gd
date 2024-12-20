@@ -4,25 +4,18 @@ class_name MeldsControl
 const StatesEnum = preload("res://StatesEnum.gd").State
 var all_melds: Array = []
 
-@export_node_path("HandContainer") var handContainerPath
-@onready var handContainer: HandContainer = get_node(handContainerPath)
+@onready var HandObj: HandControl = get_tree().get_first_node_in_group("Hand")
 
 
 func add_set(meld: Array[Card]):
-	if not _is_valid_meld(meld):
-		return false
-	
 	all_melds.append(meld)
-	
 	return true
 
-func _is_valid_meld(meld: Array[Card]) -> bool:
+func is_valid_meld(meld: Array[Card]) -> bool:
 	if len(meld) < 3: 
 		return false
 	
 	var simple_list = meld.map(func(x: Card): return {"value": x.value, "suit": x.suit})
-	
-	
 	return self._is_set(simple_list.duplicate()) or self._is_run(simple_list.duplicate())
 
 func _is_set(meld: Array) -> bool:
@@ -56,13 +49,13 @@ func _is_run(meld: Array) -> bool:
 	return true
 
 func check_endgame(_node):
-	if handContainer == null:
+	if HandObj == null:
 		return
 	
-	var cards_left: Array[Card] = handContainer.get_cards()
+	var cards_left: Array[Card] = HandObj.get_cards()
 	
-	print(len(cards_left))
-	if len(cards_left) <= 1:
+	# print(len(cards_left))
+	if len(cards_left) < 1:
 		print('YOU WIN')
 		return
 	return

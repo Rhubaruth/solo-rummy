@@ -1,11 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://biy2th7ch5a2r"]
+[gd_scene load_steps=10 format=3 uid="uid://biy2th7ch5a2r"]
 
 [ext_resource type="Script" path="res://card_container.gd" id="1_j1ohw"]
-[ext_resource type="Script" path="res://game.gd" id="1_lfp6u"]
+[ext_resource type="Script" path="res://board.gd" id="1_pvyj6"]
 [ext_resource type="Script" path="res://discard_button.gd" id="2_j5pqj"]
 [ext_resource type="Script" path="res://meld_button.gd" id="2_seyna"]
 [ext_resource type="Script" path="res://deck.gd" id="2_sie3a"]
-[ext_resource type="Texture2D" uid="uid://cfvu43og8w65m" path="res://assets/boardgamePack_v2/Vector/playingCards_back.svg" id="2_uslp4"]
 [ext_resource type="Texture2D" uid="uid://c7poq44a7a1gq" path="res://assets/boardgamePack_v2/Vector/playingCards.svg" id="3_iqj4u"]
 [ext_resource type="Script" path="res://meld_container.gd" id="8_db5cs"]
 
@@ -20,7 +19,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_lfp6u")
+script = ExtResource("1_pvyj6")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -33,49 +32,44 @@ mouse_filter = 1
 color = Color(0.152727, 0.293169, 0.338079, 1)
 
 [node name="MeldButton" type="Button" parent="."]
-self_modulate = Color(1, 0.101705, 0.72068, 1)
-custom_minimum_size = Vector2(144, 194)
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -224.0
-offset_top = 48.0
-offset_right = -80.0
-offset_bottom = 242.0
-grow_horizontal = 0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 64.0
+offset_top = -60.0
+offset_right = 168.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/focus = SubResource("StyleBoxEmpty_quunf")
-toggle_mode = true
+disabled = true
 action_mode = 0
 text = "Vyložit"
 script = ExtResource("2_seyna")
 
 [node name="DiscardButton" type="Button" parent="."]
-self_modulate = Color(1, 0.101705, 0.72068, 1)
-custom_minimum_size = Vector2(144, 194)
 layout_mode = 1
-anchors_preset = -1
-offset_left = 272.0
-offset_top = 48.0
-offset_right = 416.0
-offset_bottom = 242.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -168.0
+offset_top = -60.0
+offset_right = -64.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/focus = SubResource("StyleBoxEmpty_vufhf")
+disabled = true
 action_mode = 0
 text = "Zahodit"
-flat = true
 script = ExtResource("2_j5pqj")
 
-[node name="Sprite2D" type="Sprite2D" parent="DiscardButton"]
-visible = false
-show_behind_parent = true
-position = Vector2(2, 2)
-texture = ExtResource("3_iqj4u")
-centered = false
-hframes = 14
-vframes = 4
-frame = 55
-
-[node name="Deck" type="Control" parent="." groups=["Deck"]]
+[node name="Deck" type="Control" parent="."]
 custom_minimum_size = Vector2(144, 194)
 anchors_preset = 0
 offset_left = 80.0
@@ -83,14 +77,14 @@ offset_top = 48.0
 offset_right = 224.0
 offset_bottom = 242.0
 script = ExtResource("2_sie3a")
-handContainerPath = NodePath("../Hand")
+hand_size = 12
 
 [node name="Sprite2D" type="Sprite2D" parent="Deck"]
-texture = ExtResource("2_uslp4")
+texture = ExtResource("3_iqj4u")
 centered = false
 offset = Vector2(2, 2)
-region_enabled = true
-region_rect = Rect2(601, 0, 139, 190)
+hframes = 14
+vframes = 4
 
 [node name="Hand" type="Control" parent="." groups=["Hand"]]
 layout_mode = 1
@@ -100,32 +94,26 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -496.0
-offset_top = -12.0
-offset_right = 448.0
-offset_bottom = 178.0
+offset_top = 28.0
+offset_right = 496.0
+offset_bottom = 218.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_j1ohw")
-metadata/_edit_group_ = true
 
 [node name="Melds" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
-offset_left = 20.0
-offset_top = 312.0
-offset_right = 60.0
-offset_bottom = 502.0
-grow_horizontal = 0
+anchor_bottom = 1.0
+offset_left = 1160.0
+offset_right = 1160.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("8_db5cs")
-handContainerPath = NodePath("../Hand")
 
-[connection signal="state_change" from="." to="MeldButton" method="_on_board_state_change"]
-[connection signal="state_change" from="." to="DiscardButton" method="_on_board_state_change"]
-[connection signal="state_change" from="." to="Deck" method="_on_board_state_change"]
-[connection signal="toggled" from="MeldButton" to="." method="_on_meld_button_toggled"]
-[connection signal="drawing" from="Deck" to="." method="_on_deck_drawing"]
+[connection signal="change_cards_selected" from="." to="MeldButton" method="_on_selection_changed"]
+[connection signal="change_cards_selected" from="." to="DiscardButton" method="_on_selection_changed"]
+[connection signal="pressed" from="DiscardButton" to="." method="_on_discard_pressed"]
 [connection signal="child_entered_tree" from="Hand" to="Hand" method="_on_child_entered_tree"]
 [connection signal="child_exiting_tree" from="Hand" to="Hand" method="_on_child_exiting_tree"]
-[connection signal="child_entered_tree" from="Melds" to="Melds" method="check_endgame"]

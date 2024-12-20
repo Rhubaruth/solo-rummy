@@ -1,0 +1,103 @@
+[gd_scene load_steps=6 format=3 uid="uid://dm6d4247pu0m1"]
+
+[ext_resource type="Script" path="res://Card/card.gd" id="1_3r7l7"]
+[ext_resource type="Texture2D" uid="uid://c7poq44a7a1gq" path="res://assets/boardgamePack_v2/Vector/playingCards.svg" id="3_623ql"]
+
+[sub_resource type="Animation" id="Animation_rjoco"]
+length = 0.05
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.05),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.05),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_c5vbp"]
+resource_name = "Select"
+length = 0.12
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("Sprite:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.12),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.932191, 0.878755, 0.902138, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.12),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -70)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kd4co"]
+_data = {
+"RESET": SubResource("Animation_rjoco"),
+"Select": SubResource("Animation_c5vbp")
+}
+
+[node name="Card" type="Container" groups=["Card"]]
+custom_minimum_size = Vector2(128, 260)
+offset_right = 128.0
+offset_bottom = 260.0
+script = ExtResource("1_3r7l7")
+metadata/_edit_group_ = true
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+visible = false
+custom_minimum_size = Vector2(128, 288)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+border_width = 2.0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+show_behind_parent = true
+position = Vector2(-16, 56)
+rotation = -0.0349066
+texture = ExtResource("3_623ql")
+centered = false
+hframes = 14
+vframes = 4
+
+[node name="Anim" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_kd4co")
+}
+
+[node name="ClickCD" type="Timer" parent="."]
+wait_time = 0.075
+one_shot = true
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

@@ -1,10 +1,9 @@
 extends Button
+class_name MeldButton
 
-const StatesEnum = preload("res://StatesEnum.gd").State
+const STATES = preload("res://StatesEnum.gd").State
 
 
-func _on_board_state_change(state):
-	if state == StatesEnum.MELDING_END:
-		button_pressed = true
-	
+func _on_selection_changed(num):
+	self.disabled = num < 3
 	pass # Replace with function body.
