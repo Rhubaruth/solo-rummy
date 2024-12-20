@@ -4,6 +4,10 @@ class_name MeldsControl
 const StatesEnum = preload("res://StatesEnum.gd").State
 var all_melds: Array = []
 
+@export_node_path("HandContainer") var handContainerPath
+@onready var handContainer: HandContainer = get_node(handContainerPath)
+
+
 func add_set(meld: Array[Card]):
 	if not _is_valid_meld(meld):
 		return false
@@ -30,7 +34,7 @@ func _is_set(meld: Array) -> bool:
 
 
 func _sort_cards(a, b) -> bool:
-	if a.value < b.value or a.suit < b.suit:
+	if a.suit * 100 + a.value < b.suit * 100 + b.value:
 		return true
 	return false
 
@@ -50,3 +54,15 @@ func _is_run(meld: Array) -> bool:
 			return false
 		previous_card = card
 	return true
+
+func check_endgame(_node):
+	if handContainer == null:
+		return
+	
+	var cards_left: Array[Card] = handContainer.get_cards()
+	
+	print(len(cards_left))
+	if len(cards_left) <= 1:
+		print('YOU WIN')
+		return
+	return

@@ -48,7 +48,6 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_quunf")
 toggle_mode = true
 action_mode = 0
 text = "Vyložit"
-flat = true
 script = ExtResource("2_seyna")
 
 [node name="DiscardButton" type="Button" parent="."]
@@ -100,9 +99,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -472.0
+offset_left = -496.0
 offset_top = -12.0
-offset_right = 472.0
+offset_right = 448.0
 offset_bottom = 178.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -120,6 +119,7 @@ offset_right = 60.0
 offset_bottom = 502.0
 grow_horizontal = 0
 script = ExtResource("8_db5cs")
+handContainerPath = NodePath("../Hand")
 
 [connection signal="state_change" from="." to="MeldButton" method="_on_board_state_change"]
 [connection signal="state_change" from="." to="DiscardButton" method="_on_board_state_change"]
@@ -128,3 +128,4 @@ script = ExtResource("8_db5cs")
 [connection signal="drawing" from="Deck" to="." method="_on_deck_drawing"]
 [connection signal="child_entered_tree" from="Hand" to="Hand" method="_on_child_entered_tree"]
 [connection signal="child_exiting_tree" from="Hand" to="Hand" method="_on_child_exiting_tree"]
+[connection signal="child_entered_tree" from="Melds" to="Melds" method="check_endgame"]

@@ -83,6 +83,7 @@ mouse_filter = 1
 border_width = 2.0
 
 [node name="Sprite" type="Sprite2D" parent="."]
+show_behind_parent = true
 position = Vector2(-10, 96)
 rotation = -0.0349066
 texture = ExtResource("3_623ql")

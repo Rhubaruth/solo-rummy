@@ -27,7 +27,11 @@ func _ready():
 			deck.append(card)
 	
 	deck.shuffle()
+	var start_hand = deck.slice(0, 12)
+	start_hand.sort_custom(_sort_cards)
+
 	for i in range(12):
+		deck[0] = start_hand[i]
 		draw_card()
 	
 	var joker_position = randi_range(10, len(deck)-2)
@@ -35,6 +39,11 @@ func _ready():
 	card.setup(SuitEnum.Spades, 14)
 	deck.insert(joker_position, card)
 	
+
+func _sort_cards(a, b) -> bool:
+	if a.suit * 100 + a.value < b.suit * 100 + b.value:
+		return true
+	return false
 
 func draw_card() -> bool:
 	if len(deck) < 1:

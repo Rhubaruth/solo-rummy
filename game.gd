@@ -9,6 +9,7 @@ var state = StatesEnum.DISCARDING
 signal state_change(state)
 
 @onready var meldsContainer: MeldsControl = $Melds
+@onready var handContainer: HandContainer = $Hand
 
 func _ready():
 	Input.emulate_mouse_from_touch = true

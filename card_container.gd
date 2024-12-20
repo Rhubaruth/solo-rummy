@@ -5,6 +5,16 @@ const SPACING: int = -48
 const CARD_WIDTH: int = 128
 
 
+func _ready():
+	get_cards()
+
+func get_cards():
+	var cards: Array[Card] = []
+	for child in get_children():
+		if is_instance_of(child, Card):
+			cards.append(child)
+	return cards
+
 func swap(card: Card, dir: int):
 	var node_idx = card.get_index()
 	if node_idx + dir < 0 or node_idx + dir >= get_child_count():
