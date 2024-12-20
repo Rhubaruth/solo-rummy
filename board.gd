@@ -48,6 +48,7 @@ func _on_discard_pressed():
 	var is_joker_next: bool = deckControl.draw_card()
 	if is_joker_next:
 		state = STATES.MELDING_ONLY
+		meldsContainer.check_endgame()
 	state_change.emit(state)
 
 
@@ -59,7 +60,18 @@ func _on_meld_pressed():
 		for card in cardsSelected:
 			card.reparent(meldsContainer)
 			card.move_to(Vector2.ZERO)
-		
+		cardsSelected.clear()
+		handContainer._on_child_order_changed()
+	
+	if state == STATES.MELDING_ONLY or handContainer.get_child_count() < 1:
+		meldsContainer.check_endgame()
+	
 	for card in cardsSelected:
-		card.deselect()
+		card.deselect(false)
 	cardsSelected.clear()
+	change_cards_selected.emit(0)
+
+
+func _on_melds_on_end_checked(win):
+	print('Win? ', win)
+	pass # Replace with function body.

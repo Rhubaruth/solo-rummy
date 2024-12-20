@@ -66,7 +66,8 @@ func _on_gui_input(event):
 			return
 	
 	if Input.is_action_just_released("click"):
-		if click_timer > SHORT_CLICK_THREASHOLD or self.value == 14:
+		if click_timer > SHORT_CLICK_THREASHOLD or self.value == 14 \
+		or state == CARD_STATES.HOVER:
 			end_hover()
 			return
 		ClickCD.start()
@@ -109,19 +110,20 @@ func end_hover():
 		var duration = 0.08
 		tween.tween_property(Sprite, "offset", Vector2.ZERO, duration)
 
-func select():
+func select(emit: bool = true):
 	self.state = CARD_STATES.SELECTED
-	card_selected.emit()
 	Anim.play("Select")
-	pass
+	if emit:
+		card_selected.emit()
 
-func deselect():
+func deselect(emit: bool = true):
 	self.state = CARD_STATES.NONE
-	card_deselected.emit()
 	Anim.play_backwards("Select")
-	pass
+	if emit:
+		card_deselected.emit()
 
 func move_to(new_position: Vector2, speed_mult: float = 1):
+	
 	var tween: Tween = create_tween()
 	var duration = 0.3 / speed_mult
 	tween.tween_property(self, "position", new_position, duration)

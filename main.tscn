@@ -77,7 +77,7 @@ offset_top = 48.0
 offset_right = 224.0
 offset_bottom = 242.0
 script = ExtResource("2_sie3a")
-hand_size = 12
+hand_size = 9
 
 [node name="Sprite2D" type="Sprite2D" parent="Deck"]
 texture = ExtResource("3_iqj4u")
@@ -107,13 +107,17 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 1160.0
+offset_top = 192.0
 offset_right = 1160.0
+offset_bottom = -72.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("8_db5cs")
 
 [connection signal="change_cards_selected" from="." to="MeldButton" method="_on_selection_changed"]
 [connection signal="change_cards_selected" from="." to="DiscardButton" method="_on_selection_changed"]
+[connection signal="pressed" from="MeldButton" to="." method="_on_meld_pressed"]
 [connection signal="pressed" from="DiscardButton" to="." method="_on_discard_pressed"]
 [connection signal="child_entered_tree" from="Hand" to="Hand" method="_on_child_entered_tree"]
 [connection signal="child_exiting_tree" from="Hand" to="Hand" method="_on_child_exiting_tree"]
+[connection signal="on_end_checked" from="Melds" to="." method="_on_melds_on_end_checked"]

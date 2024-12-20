@@ -1,13 +1,18 @@
 extends Control
 class_name MeldsControl
 
-const StatesEnum = preload("res://StatesEnum.gd").State
+const STATES = preload("res://StatesEnum.gd").State
+const SUITS = preload("res://SuitEnum.gd").Suit
 var all_melds: Array = []
 
 @onready var HandObj: HandControl = get_tree().get_first_node_in_group("Hand")
 
+signal on_end_checked(win: bool)
 
-func add_set(meld: Array[Card]):
+func add_set(meld: Array[Card]) -> bool:
+	if not is_valid_meld(meld):
+		return false
+	
 	all_melds.append(meld)
 	return true
 
@@ -48,14 +53,52 @@ func _is_run(meld: Array) -> bool:
 		previous_card = card
 	return true
 
-func check_endgame(_node):
-	if HandObj == null:
-		return
-	
+func check_endgame() -> bool:
 	var cards_left: Array[Card] = HandObj.get_cards()
-	
-	# print(len(cards_left))
 	if len(cards_left) < 1:
-		print('YOU WIN')
-		return
-	return
+		on_end_checked.emit(true)
+		return true
+	elif len(cards_left) < 3:
+		on_end_checked.emit(false)
+		return true
+	
+	cards_left.sort_custom(_sort_cards)
+	var simple_list: Array = cards_left.map(func(x: Card): return {"value": x.value, "suit": x.suit})
+	# Add num 14 Aces
+	for x in simple_list:
+		if x.value == 1:
+			simple_list.append({"value": 14, "suit": x.suit})
+	
+	
+	# Check if there's Run
+	var val: int = simple_list[0].value
+	var suit: int = simple_list[0].suit
+	var count: int = 1
+	
+	for i in range(1, len(simple_list)):
+		if suit != simple_list[i].suit or val+1 != simple_list[i].value:
+			val = simple_list[i].value
+			suit = simple_list[i].suit
+			count = 1
+			continue
+		val = simple_list[i].value
+		count += 1
+		if count >= 3:
+			return false
+	
+	# Check if there's Set
+	simple_list.sort_custom(func(a, b): return a.value < b.value)
+	val = simple_list[0].value
+	count = 1
+	
+	for i in range(1, len(simple_list)):
+		if val != simple_list[i].value:
+			val = simple_list[i].value
+			count = 1
+			continue
+		count += 1
+		if count >= 3:
+			return false
+	
+	on_end_checked.emit(false)
+	return true

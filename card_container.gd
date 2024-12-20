@@ -31,7 +31,6 @@ func swap(card: Card, dir: int):
 	pass
 
 func move_to_place(node, node_idx: int):
-	spacing = self.size.x / get_child_count() - CARD_WIDTH
 	var new_pos := Vector2.ZERO
 	new_pos.x = node_idx * (CARD_WIDTH + spacing)
 	if is_instance_of(node, Card):
@@ -41,6 +40,8 @@ func move_to_place(node, node_idx: int):
 	pass
 
 func _on_child_entered_tree(node):
+	spacing = self.size.x / get_child_count() - CARD_WIDTH
+	
 	var node_idx = node.get_index()
 	move_to_place(node, node_idx)
 
