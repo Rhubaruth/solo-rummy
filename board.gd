@@ -50,6 +50,7 @@ func _on_discard_pressed():
 		state = STATES.MELDING_ONLY
 		meldsContainer.check_endgame()
 	state_change.emit(state)
+	change_cards_selected.emit(0)
 
 
 func _on_meld_pressed():
@@ -72,6 +73,8 @@ func _on_meld_pressed():
 	change_cards_selected.emit(0)
 
 
-func _on_melds_on_end_checked(win):
+func _on_end_checked(win):
 	print('Win? ', win)
+	
+	
 	pass # Replace with function body.
