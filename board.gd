@@ -13,6 +13,8 @@ signal change_cards_selected(num: int)
 @onready var deckControl: DeckControl = $Deck
 @onready var meldsContainer: MeldsControl = $Melds
 @onready var handContainer: HandControl = $Hand
+@onready var animPlayer: AnimationPlayer = $Overlay/Anim
+@onready var endgameLabel: Label = $Overlay/TextLabel
 
 # Interactable nodes
 @onready var meldButton: MeldButton = $MeldButton
@@ -76,5 +78,10 @@ func _on_meld_pressed():
 func _on_end_checked(win):
 	print('Win? ', win)
 	
+	if win:
+		endgameLabel.text = "Výhra!"
+	else:
+		endgameLabel.text = "Prohra"
+	animPlayer.play("Fadeout")
 	
 	pass # Replace with function body.
