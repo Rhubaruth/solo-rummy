@@ -1,5 +1,5 @@
 class_name Card
-extends Container
+extends Control
 
 
 @onready var Sprite: Sprite2D = $Sprite

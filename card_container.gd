@@ -6,6 +6,7 @@ const CARD_WIDTH: int = 128
 
 
 func _ready():
+	spacing = self.size.x / get_child_count() - CARD_WIDTH
 	_on_child_order_changed()
 
 func get_cards():
@@ -59,6 +60,7 @@ func _on_child_order_changed():
 	if get_child_count() < 1:
 		return
 	
+	spacing = self.size.x / get_child_count() - CARD_WIDTH
 	for i in range(0, get_child_count()):
 		var card = get_child(i)
 		move_to_place(card, i)

@@ -53,7 +53,7 @@ func _is_run(meld: Array) -> bool:
 		previous_card = card
 	return true
 
-func check_endgame() -> bool:
+func check_endgame(state: STATES) -> bool:
 	var cards_left: Array[Card] = HandObj.get_cards()
 	if len(cards_left) < 1:
 		on_end_checked.emit(true)
@@ -61,6 +61,9 @@ func check_endgame() -> bool:
 	elif len(cards_left) < 3:
 		on_end_checked.emit(false)
 		return true
+	
+	if state != STATES.MELDING_ONLY:
+		return false
 	
 	cards_left.sort_custom(_sort_cards)
 	var simple_list: Array = cards_left.map(func(x: Card): return {"value": x.value, "suit": x.suit})

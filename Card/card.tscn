@@ -66,17 +66,22 @@ _data = {
 "Select": SubResource("Animation_c5vbp")
 }
 
-[node name="Card" type="Container" groups=["Card"]]
-custom_minimum_size = Vector2(128, 260)
+[node name="Card" type="Control" groups=["Card"]]
+custom_minimum_size = Vector2(128, 240)
+layout_mode = 3
+anchors_preset = 0
 offset_right = 128.0
-offset_bottom = 260.0
+offset_bottom = 240.0
 script = ExtResource("1_3r7l7")
 metadata/_edit_group_ = true
 
-[node name="ReferenceRect" type="ReferenceRect" parent="."]
-visible = false
-custom_minimum_size = Vector2(128, 288)
-layout_mode = 2
+[node name="Reference" type="ReferenceRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
